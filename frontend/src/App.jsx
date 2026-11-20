@@ -1,9 +1,16 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
 import Topbar from "./components/Topbar";
 import Dashboard from "./pages/Dashboard";
+import Applications from "./pages/Applications";
 import "./App.css";
 
 function PlaceholderPage({ title }) {
@@ -20,10 +27,11 @@ function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
 
+  const navigate = useNavigate();
   const closeSidebar = () => setIsSidebarOpen(false);
 
   const handleAddApplication = () => {
-    window.alert("We'll add the application form in the next step.");
+    navigate("/applications");
   };
 
   return (
@@ -39,10 +47,7 @@ function AppLayout() {
         <main className="main-content" key={location.pathname}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route
-              path="/applications"
-              element={<PlaceholderPage title="Applications" />}
-            />
+            <Route path="/applications" element={<Applications />} />
             <Route
               path="/board"
               element={<PlaceholderPage title="Kanban board" />}
