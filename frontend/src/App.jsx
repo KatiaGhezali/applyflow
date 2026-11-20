@@ -11,6 +11,8 @@ import Sidebar from "./components/Sidebar";
 import Topbar from "./components/Topbar";
 import Dashboard from "./pages/Dashboard";
 import Applications from "./pages/Applications";
+import { ApplicationProvider } from "./context/ApplicationContext.jsx";
+import KanbanBoard from "./pages/KanbanBoard";
 import "./App.css";
 
 function PlaceholderPage({ title }) {
@@ -48,10 +50,7 @@ function AppLayout() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/applications" element={<Applications />} />
-            <Route
-              path="/board"
-              element={<PlaceholderPage title="Kanban board" />}
-            />
+            <Route path="/board" element={<KanbanBoard />} />
             <Route
               path="/interviews"
               element={<PlaceholderPage title="Interviews" />}
@@ -73,10 +72,11 @@ function AppLayout() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppLayout />
-    </BrowserRouter>
+    <ApplicationProvider>
+      <BrowserRouter>
+        <AppLayout />
+      </BrowserRouter>
+    </ApplicationProvider>
   );
 }
-
 export default App;

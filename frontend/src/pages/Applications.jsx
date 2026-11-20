@@ -12,7 +12,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-import { initialApplications } from "../data/applications";
+import { useApplications } from "../context/useApplications";
 import ApplicationModal from "../components/ApplicationModal";
 
 const statusOptions = [
@@ -35,7 +35,8 @@ function formatDate(date) {
 }
 
 function Applications() {
-  const [applications, setApplications] = useState(initialApplications);
+  const { applications, addApplication, updateApplication, deleteApplication } =
+    useApplications();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All statuses");
   const [sortOrder, setSortOrder] = useState("newest");
@@ -89,40 +90,25 @@ function Applications() {
   };
 
   const handleSaveApplication = (formData) => {
-    if (editingApplication) {
-      setApplications((current) =>
-        current.map((application) =>
-          application.id === editingApplication.id
-            ? { ...formData, id: editingApplication.id }
-            : application,
-        ),
-      );
-    } else {
-      setApplications((current) => [
-        {
-          ...formData,
-          id: Date.now(),
-        },
-        ...current,
-      ]);
-    }
+  if (editingApplication) {
+    updateApplication(editingApplication.id, formData);
+  } else {
+    addApplication(formData);
+  }
 
-    setEditingApplication(null);
-  };
+  setEditingApplication(null);
+};
 
   const handleDeleteApplication = (application) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete the application for ${application.position} at ${application.company}?`,
-    );
+  const confirmed = window.confirm(
+    `Are you sure you want to delete the application for ${application.position} at ${application.company}?`,
+  );
 
-    if (!confirmed) return;
+  if (!confirmed) return;
 
-    setApplications((current) =>
-      current.filter((item) => item.id !== application.id),
-    );
-
-    setActiveMenu(null);
-  };
+  deleteApplication(application.id);
+  setActiveMenu(null);
+};
 
   return (
     <div className="applications-page">
