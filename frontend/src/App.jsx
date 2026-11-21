@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Applications from "./pages/Applications";
 import { ApplicationProvider } from "./context/ApplicationContext.jsx";
 import KanbanBoard from "./pages/KanbanBoard";
+import Interviews from "./pages/Interviews";
 import "./App.css";
 
 function PlaceholderPage({ title }) {
@@ -51,10 +52,7 @@ function AppLayout() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/applications" element={<Applications />} />
             <Route path="/board" element={<KanbanBoard />} />
-            <Route
-              path="/interviews"
-              element={<PlaceholderPage title="Interviews" />}
-            />
+            <Route path="/interviews" element={<Interviews />} />
             <Route
               path="/settings"
               element={<PlaceholderPage title="Settings" />}
