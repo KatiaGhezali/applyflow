@@ -7,6 +7,7 @@ import {
   ArrowRight,
   MoreHorizontal,
 } from "lucide-react";
+import { useUserSettings } from "../context/useUserSettings";
 
 const stats = [
   {
@@ -100,13 +101,16 @@ const interviews = [
 ];
 
 function Dashboard() {
+  const { settings } = useUserSettings();
+
+  const firstName = settings.fullName.trim().split(/\s+/)[0] || "there";
   return (
     <div className="dashboard">
       <section className="welcome-section">
         <div>
           <p className="welcome-eyebrow">FRIDAY, NOVEMBER 20, 2026</p>
           <h1>
-            Good morning, Katia <span>✦</span>
+            Good morning, {firstName} <span>✦</span>
           </h1>
           <p className="welcome-description">
             Here's what's happening with your job search today.

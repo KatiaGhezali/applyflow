@@ -12,8 +12,10 @@ import Topbar from "./components/Topbar";
 import Dashboard from "./pages/Dashboard";
 import Applications from "./pages/Applications";
 import { ApplicationProvider } from "./context/ApplicationContext.jsx";
+import { UserSettingsProvider } from "./context/UserSettingsContext.jsx";
 import KanbanBoard from "./pages/KanbanBoard";
 import Interviews from "./pages/Interviews";
+import Settings from "./pages/Settings";
 import "./App.css";
 
 function PlaceholderPage({ title }) {
@@ -53,10 +55,7 @@ function AppLayout() {
             <Route path="/applications" element={<Applications />} />
             <Route path="/board" element={<KanbanBoard />} />
             <Route path="/interviews" element={<Interviews />} />
-            <Route
-              path="/settings"
-              element={<PlaceholderPage title="Settings" />}
-            />
+            <Route path="/settings" element={<Settings />} />
             <Route
               path="*"
               element={<PlaceholderPage title="Page not found" />}
@@ -70,11 +69,13 @@ function AppLayout() {
 
 function App() {
   return (
-    <ApplicationProvider>
-      <BrowserRouter>
-        <AppLayout />
-      </BrowserRouter>
-    </ApplicationProvider>
+    <UserSettingsProvider>
+      <ApplicationProvider>
+        <BrowserRouter>
+          <AppLayout />
+        </BrowserRouter>
+      </ApplicationProvider>
+    </UserSettingsProvider>
   );
 }
 export default App;

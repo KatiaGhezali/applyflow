@@ -10,6 +10,7 @@ import {
   Layers3,
   X,
 } from "lucide-react";
+import { useUserSettings } from "../context/useUserSettings";
 
 const navigation = [
   { label: "Dashboard", path: "/", icon: LayoutDashboard },
@@ -19,6 +20,7 @@ const navigation = [
 ];
 
 function Sidebar({ isOpen, onClose }) {
+  const { settings } = useUserSettings();
   return (
     <>
       {isOpen && (
@@ -98,7 +100,7 @@ function Sidebar({ isOpen, onClose }) {
           <div className="sidebar-user">
             <div className="user-avatar">KG</div>
             <div className="sidebar-user-info">
-              <strong>Katia Ghezali</strong>
+              <strong>{settings.fullName || "Your name"}</strong>
               <span>Free plan</span>
             </div>
             <span className="user-menu-dots">···</span>
