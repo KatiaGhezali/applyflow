@@ -5,18 +5,27 @@ import {
   Route,
   useLocation,
   useNavigate,
+  Navigate,
 } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
 import Topbar from "./components/Topbar";
+
 import Dashboard from "./pages/Dashboard";
 import Applications from "./pages/Applications";
-import { ApplicationProvider } from "./context/ApplicationContext.jsx";
-import { UserSettingsProvider } from "./context/UserSettingsContext.jsx";
 import KanbanBoard from "./pages/KanbanBoard";
 import Interviews from "./pages/Interviews";
 import Settings from "./pages/Settings";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+import { AuthProvider } from "./context/AuthContext.jsx";
+import { useAuth } from "./context/useAuth";
+import { ApplicationProvider } from "./context/ApplicationContext.jsx";
+import { UserSettingsProvider } from "./context/UserSettingsContext.jsx";
+
 import "./App.css";
+import "./auth.css";
 
 function PlaceholderPage({ title }) {
   return (
@@ -28,11 +37,23 @@ function PlaceholderPage({ title }) {
   );
 }
 
+function PublicRoute({ children }) {
+  const { isAuthenticated } = useAuth();
+
+  return isAuthenticated ? <Navigate to="/" replace /> : children;
+}
+
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useAuth();
+
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
+}
+
 function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
-
   const navigate = useNavigate();
+
   const closeSidebar = () => setIsSidebarOpen(false);
 
   const handleAddApplication = () => {
@@ -69,13 +90,43 @@ function AppLayout() {
 
 function App() {
   return (
-    <UserSettingsProvider>
-      <ApplicationProvider>
-        <BrowserRouter>
-          <AppLayout />
-        </BrowserRouter>
-      </ApplicationProvider>
-    </UserSettingsProvider>
+    <AuthProvider>
+      <UserSettingsProvider>
+        <ApplicationProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/login"
+                element={
+                  <PublicRoute>
+                    <Login />
+                  </PublicRoute>
+                }
+              />
+
+              <Route
+                path="/register"
+                element={
+                  <PublicRoute>
+                    <Register />
+                  </PublicRoute>
+                }
+              />
+
+              <Route
+                path="/*"
+                element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </BrowserRouter>
+        </ApplicationProvider>
+      </UserSettingsProvider>
+    </AuthProvider>
   );
 }
+
 export default App;

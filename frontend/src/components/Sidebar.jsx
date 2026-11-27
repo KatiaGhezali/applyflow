@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   BriefcaseBusiness,
@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { useUserSettings } from "../context/useUserSettings";
+import { useAuth } from "../context/useAuth";
 
 const navigation = [
   { label: "Dashboard", path: "/", icon: LayoutDashboard },
@@ -21,6 +22,13 @@ const navigation = [
 
 function Sidebar({ isOpen, onClose }) {
   const { settings } = useUserSettings();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
   return (
     <>
       {isOpen && (
@@ -92,7 +100,11 @@ function Sidebar({ isOpen, onClose }) {
 
           <div className="sidebar-divider" />
 
-          <button className="nav-link logout-button" type="button">
+          <button
+            className="nav-link logout-button"
+            type="button"
+            onClick={handleLogout}
+          >
             <LogOut size={19} strokeWidth={1.9} />
             <span>Log out</span>
           </button>
